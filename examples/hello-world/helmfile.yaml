@@ -1,0 +1,26 @@
+repositories:
+- name: prometheus-community
+  url: https://prometheus-community.github.io/helm-charts
+
+releases:
+- name: prom-norbac-ubuntu
+  namespace: prometheus
+  chart: prometheus-community/prometheus
+  set:
+  - name: rbac.create
+    value: false
+  transformers:
+  # Use KRM KCL Plugin to mutate or validate Kubernetes manifests.
+  - apiVersion: krm.kcl.dev/v1alpha1
+    kind: KCLRun
+    metadata:
+      name: "set-annotation"
+      annotations:
+        config.kubernetes.io/function: |
+          container:
+            image: docker.io/kcllang/kustomize-kcl:v0.1.2
+    spec:
+      params:
+        annotations:
+          config.kubernetes.io/local-config: "true"
+      source: oci://ghcr.io/kcl-lang/set-annotation
