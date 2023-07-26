@@ -10,7 +10,7 @@ releases:
   - name: rbac.create
     value: false
   transformers:
-  # Use KRM KCL Plugin to mutate or validate Kubernetes manifests.
+  # Use KCL Plugin to mutate or validate Kubernetes manifests.
   - apiVersion: krm.kcl.dev/v1alpha1
     kind: KCLRun
     metadata:
@@ -18,9 +18,7 @@ releases:
       annotations:
         config.kubernetes.io/function: |
           container:
-            image: docker.io/kcllang/kustomize-kcl:v0.1.1
+            image: docker.io/kcllang/kustomize-kcl:v0.1.2
     spec:
-      params:
-        annotations:
-          config.kubernetes.io/local-config: "true"
-      source: oci://ghcr.io/kcl-lang/set-annotation
+      source: |
+        [resource | {if resource.kind == "Deployment": metadata.annotations: {"managed-by" = "helmfile-kcl"}} for resource in option("resource_list").items]
