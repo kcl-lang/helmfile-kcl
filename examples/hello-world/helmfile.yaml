@@ -18,7 +18,7 @@ releases:
       annotations:
         config.kubernetes.io/function: |
           container:
-            image: docker.io/kcllang/kustomize-kcl:v0.1.2
+            image: docker.io/kcllang/kustomize-kcl:v0.1.1
     spec:
       params:
         annotations:
