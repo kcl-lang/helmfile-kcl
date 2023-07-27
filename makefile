@@ -4,3 +4,6 @@ PKG:= kcl-lang.io/helmfile-kcl
 
 run:
 	go run main.go
+
+test:
+	go test ./...
